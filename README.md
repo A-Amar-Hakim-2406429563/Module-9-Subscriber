@@ -20,3 +20,15 @@ Jadi format lengkapnya dipakai utk login ke RabbitMQ lokal dengan username guest
 Karena angka total queue itu ngikutin kondisi RabbitMQ yg lagi jalan pas itu. Jadi kalau queue atau message yg masih antri banyak, angkanya bakal naik. Kalau subscriber jalan terus dan message langsung diproses, totalnya bisa kecil atau bahkan 0.
 
 Di laptopku, angkanya beda sama contoh di modul karena aku jalanin ulang service nya sendiri dan queue/message yg tersisa juga beda. Jadi intinya memang normal kalau hasilnya gak persis sama, yg penting RabbitMQ nya konek dan message bisa masuk lalu diproses.
+
+# Reflection and Running at least three subscribers
+![alt text](subsRun.png)
+![alt text](subs1.png)
+![alt text](subs2.png)
+![alt text](subs3.png)
+![alt text](subsRabbitMQ.png)
+
+## Reflection
+Jadi aku nyoba jalankan minimal 3 instance subscriber di mesin lokal (pakai 3 container). Trus aku jalankan publisher beberapa kali dgn cepat, hasilnya RabbitMQ membagi pesan ke ketiga subscriber, jadi antrian (queue) cepat berkurang dan chartnya nunjukin spike lalu turun.
+
+Kenapa bisa gitu? krn ada banyak consumer yang siap ambil pesan, load dibagi rata. Kalau cuma 1 subscriber, semua message bakal nunggu dan antrian terlihat lebih tinggi. Itu normal dan nunjukin benefit arsitektur event-driven: kita bisa scale consumer kalau throughput butuh naik.
