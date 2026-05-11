@@ -13,3 +13,10 @@ Artinya:
 - 5672 = port default AMQP yg dipakai RabbitMQ
 
 Jadi format lengkapnya dipakai utk login ke RabbitMQ lokal dengan username guest dan password guest lewat port 5672.
+
+# Simulation slow subscriber
+![alt text](slow_subscriber.png)
+## c. Why is the total queue number like that?
+Karena angka total queue itu ngikutin kondisi RabbitMQ yg lagi jalan pas itu. Jadi kalau queue atau message yg masih antri banyak, angkanya bakal naik. Kalau subscriber jalan terus dan message langsung diproses, totalnya bisa kecil atau bahkan 0.
+
+Di laptopku, angkanya beda sama contoh di modul karena aku jalanin ulang service nya sendiri dan queue/message yg tersisa juga beda. Jadi intinya memang normal kalau hasilnya gak persis sama, yg penting RabbitMQ nya konek dan message bisa masuk lalu diproses.
