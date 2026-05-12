@@ -32,3 +32,8 @@ Di laptopku, angkanya beda sama contoh di modul karena aku jalanin ulang service
 Jadi aku nyoba jalankan minimal 3 instance subscriber di mesin lokal (pakai 3 container). Trus aku jalankan publisher beberapa kali dgn cepat, hasilnya RabbitMQ membagi pesan ke ketiga subscriber, jadi antrian (queue) cepat berkurang dan chartnya nunjukin spike lalu turun.
 
 Kenapa bisa gitu? krn ada banyak consumer yang siap ambil pesan, load dibagi rata. Kalau cuma 1 subscriber, semua message bakal nunggu dan antrian terlihat lebih tinggi. Itu normal dan nunjukin benefit arsitektur event-driven: kita bisa scale consumer kalau throughput butuh naik.
+
+## Bonus
+Dari eksplorasi modul ini, aku juga jadi makin paham soal kelebihan lain pakai message broker kayak RabbitMQ buat arsitektur microservices. Ternyata dengan adanya antrian (queue), sistem kita jadi jauh lebih reliable dan fault-tolerant. Misalnya nih, kalau tiba2 subscriber nya itu mati atau lagi down sebentar, message dari publisher gak bakal hilang karena disimpen dengan aman di antrian RabbitMQ. Nanti pas subscriber nya nyala lagi, dia bakal langsung narik dan lanjut memproses message yang sempet tertunda tadi. 
+
+Ini ngebantu banget buat mastiin gk ada data loss dan bikin interaksi antar service bener-bener loosely coupled (gak harus nunggu satu sama lain secara sinkron). Ditambah lagi karena implementasinya pakai Rust, kita dapet benefit ekstra di sisi performance dan memory safety buat nanganin event-driven architecture yg butuh kecepatan tinggi kayak gini
